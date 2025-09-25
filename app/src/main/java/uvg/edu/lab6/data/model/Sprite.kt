@@ -1,8 +1,11 @@
 package uvg.edu.lab6.data.model
 
 data class Sprites(
-    val front_default: String?,
-    val back_default: String?,
-    val front_shiny: String?,
-    val back_shiny: String?
-)
+    val frontDefault: String?,
+    val backDefault: String?,
+    val frontShiny: String?,
+    val backShiny: String?
+) {
+    val imageUrls: List<String?>
+        get() = listOf(frontDefault, backDefault, frontShiny, backShiny)
+}
