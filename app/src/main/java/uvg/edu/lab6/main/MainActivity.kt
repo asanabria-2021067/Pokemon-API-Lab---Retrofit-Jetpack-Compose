@@ -1,4 +1,4 @@
-package uvg.edu.lab6
+package uvg.edu.lab6.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
