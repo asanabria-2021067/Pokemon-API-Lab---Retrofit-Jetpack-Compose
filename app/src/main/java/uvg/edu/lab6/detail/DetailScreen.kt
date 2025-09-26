@@ -1,7 +1,9 @@
 package uvg.edu.lab6.ui.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -9,13 +11,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import uvg.edu.lab6.data.model.Pokemon
+import uvg.edu.lab6.detail.PokemonImageSlider
 import uvg.edu.lab6.ui.theme.PokedexTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,7 +50,12 @@ fun DetailScreen(
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                         }
-                    }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 )
             }
         ) { padding ->
@@ -96,12 +104,7 @@ fun PokemonDetail(pokemon: Pokemon) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
-            model = pokemon.sprites.frontDefault,
-            contentDescription = pokemon.name,
-            modifier = Modifier.size(200.dp),
-            contentScale = ContentScale.Fit
-        )
+        PokemonImageSlider(pokemon = pokemon)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -121,7 +124,6 @@ fun PokemonDetail(pokemon: Pokemon) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Basic Info
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp)
@@ -154,7 +156,6 @@ fun PokemonDetail(pokemon: Pokemon) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Types
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp)
@@ -167,18 +168,72 @@ fun PokemonDetail(pokemon: Pokemon) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                pokemon.types.forEach { typeSlot ->
-                    Text(
-                        text = typeSlot.type.name.replaceFirstChar { it.titlecase() },
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    pokemon.types.forEach { typeSlot ->
+                        val typeColor = getTypeColor(typeSlot.type.name)
+                        Card(
+                            modifier = Modifier.weight(1f),
+                            colors = CardDefaults.cardColors(
+                                containerColor = typeColor,
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text(
+                                text = typeSlot.type.name.replaceFirstChar { it.titlecase() },
+                                style = MaterialTheme.typography.bodyMedium,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Stats
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Abilities",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                pokemon.abilities.forEach { abilitySlot ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = abilitySlot.ability.name.replaceFirstChar { it.titlecase() }.replace("-", " "),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        if (abilitySlot.isHidden) {
+                            Text(
+                                text = " (Hidden)",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp)
@@ -189,21 +244,84 @@ fun PokemonDetail(pokemon: Pokemon) {
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 pokemon.stats.forEach { stat ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = stat.stat.name.replace("-", " ")
-                                .replaceFirstChar { it.titlecase() }
+                                .replaceFirstChar { it.titlecase() },
+                            modifier = Modifier.weight(1f)
                         )
-                        Text(text = stat.baseStat.toString())
+
+                        Box(
+                            modifier = Modifier
+                                .weight(2f)
+                                .height(8.dp)
+                                .padding(horizontal = 8.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        color = MaterialTheme.colorScheme.surfaceVariant,
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .fillMaxWidth(fraction = (stat.baseStat / 255f).coerceAtMost(1f))
+                                    .background(
+                                        color = when {
+                                            stat.baseStat >= 100 -> Color(0xFF4CAF50)
+                                            stat.baseStat >= 70 -> Color(0xFFFFC107)
+                                            else -> Color(0xFFF44336)
+                                        },
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                            )
+                        }
+
+                        Text(
+                            text = stat.baseStat.toString(),
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.width(40.dp),
+                            textAlign = TextAlign.End
+                        )
                     }
                 }
             }
         }
+    }
+}
+
+fun getTypeColor(type: String): Color {
+    return when (type.lowercase()) {
+        "normal" -> Color(0xFFA8A77A)
+        "fire" -> Color(0xFFEE8130)
+        "water" -> Color(0xFF6390F0)
+        "electric" -> Color(0xFFF7D02C)
+        "grass" -> Color(0xFF7AC74C)
+        "ice" -> Color(0xFF96D9D6)
+        "fighting" -> Color(0xFFC22E28)
+        "poison" -> Color(0xFFA33EA1)
+        "ground" -> Color(0xFFE2BF65)
+        "flying" -> Color(0xFFA98FF3)
+        "psychic" -> Color(0xFFF95587)
+        "bug" -> Color(0xFFA6B91A)
+        "rock" -> Color(0xFFB6A136)
+        "ghost" -> Color(0xFF735797)
+        "dragon" -> Color(0xFF6F35FC)
+        "dark" -> Color(0xFF705746)
+        "steel" -> Color(0xFFB7B7CE)
+        "fairy" -> Color(0xFFD685AD)
+        else -> Color.Gray
     }
 }

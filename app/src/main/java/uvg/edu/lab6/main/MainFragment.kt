@@ -1,5 +1,6 @@
 package uvg.edu.lab6.ui.main
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,7 +17,7 @@ import uvg.edu.lab6.data.model.PokemonSummary
 import uvg.edu.lab6.ui.theme.PokedexTheme
 
 @Composable
-fun MainFragment(onPokemonClick: (String) -> Unit, viewModel: MainViewModel = viewModel()) {
+fun MainFragment(onPokemonClick: (Int) -> Unit, viewModel: MainViewModel = viewModel()) {
     val pokemonList: List<PokemonSummary> by viewModel.pokemonList.collectAsState(initial = emptyList())
     val isLoading: Boolean by viewModel.isLoading.collectAsState(initial = true)
     val error: String? by viewModel.error.collectAsState(initial = null)
@@ -77,15 +78,18 @@ fun MainFragment(onPokemonClick: (String) -> Unit, viewModel: MainViewModel = vi
 }
 
 @Composable
-fun PokemonListItem(pokemon: PokemonSummary, onClick: (String) -> Unit) {
+fun PokemonListItem(pokemon: PokemonSummary, onClick: (Int) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable {
                 val urlParts = pokemon.url.split("/").filter { it.isNotEmpty() }
-                val pokemonId = urlParts.lastOrNull() ?: "0"
-                onClick(pokemonId)
+                val pokemonId = urlParts.lastOrNull()?.toIntOrNull() ?: 0
+                if (pokemonId > 0) {
+                    Log.d("MainFragment", "Navigating to Pokémon ID: $pokemonId")
+                    onClick(pokemonId)
+                }
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

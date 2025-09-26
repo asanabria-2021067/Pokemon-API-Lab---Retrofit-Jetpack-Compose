@@ -7,15 +7,15 @@ import uvg.edu.lab6.data.network.RetrofitInstance
 class PokemonRepository {
     private val api = RetrofitInstance.api
 
-    suspend fun getPokemonList(limit: Int = 151): PokemonListResponse {
+    suspend fun getPokemonList(limit: Int = 150): PokemonListResponse {
         return api.getPokemonList(limit)
-    }
-
-    suspend fun getPokemonDetail(name: String): Pokemon {
-        return api.getPokemonDetail(name)
     }
 
     suspend fun getPokemonById(id: Int): Pokemon {
         return api.getPokemonDetail(id.toString())
+    }
+
+    suspend fun getPokemonByName(name: String): Pokemon {
+        return api.getPokemonDetail(name)
     }
 }
