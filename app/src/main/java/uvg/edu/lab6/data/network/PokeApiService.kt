@@ -10,6 +10,6 @@ interface PokeApiService {
     @GET("pokemon")
     suspend fun getPokemonList(@Query("limit") limit: Int = 100): PokemonListResponse
 
-    @GET("pokemon/{name}")
-    suspend fun getPokemonDetail(@Path("name") name: String): Pokemon
+    @GET("pokemon/{identifier}")
+    suspend fun getPokemonDetail(@Path("identifier") identifier: String): Pokemon
 }
