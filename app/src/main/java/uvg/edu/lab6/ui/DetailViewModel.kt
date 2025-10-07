@@ -1,4 +1,4 @@
-package uvg.edu.lab6.ui.detail
+package uvg.edu.lab6.ui
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import uvg.edu.lab6.data.model.Pokemon
-import uvg.edu.lab6.data.repository.PokemonRepository
+import uvg.edu.lab6.data.repository.MainRepository
 
 class DetailViewModel(
-    private val repository: PokemonRepository = PokemonRepository()
+    private val repository: MainRepository = MainRepository()
 ) : ViewModel() {
 
     private val _pokemon = MutableStateFlow<Pokemon?>(null)

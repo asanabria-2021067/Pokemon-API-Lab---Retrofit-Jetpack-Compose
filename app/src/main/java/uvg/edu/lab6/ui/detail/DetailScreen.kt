@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import uvg.edu.lab6.data.model.Pokemon
-import uvg.edu.lab6.detail.PokemonImageSlider
+import uvg.edu.lab6.ui.DetailViewModel
 import uvg.edu.lab6.ui.theme.PokedexTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

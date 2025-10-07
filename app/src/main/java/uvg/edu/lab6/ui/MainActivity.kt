@@ -1,4 +1,4 @@
-package uvg.edu.lab6
+package uvg.edu.lab6.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -58,4 +58,8 @@ fun PokedexApp() {
             }
         }
     }
+}
+
+object Screen {
+    fun detailRoute(pokemonId: Int) = "detail/$pokemonId"
 }

@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import uvg.edu.lab6.ui.Screen
 import uvg.edu.lab6.data.model.PokemonSummary
+import uvg.edu.lab6.ui.MainViewModel
 import uvg.edu.lab6.ui.theme.PokedexTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

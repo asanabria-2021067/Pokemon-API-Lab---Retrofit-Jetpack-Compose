@@ -1,5 +1,6 @@
-package uvg.edu.lab6.detail
+package uvg.edu.lab6.ui.detail
 
+import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -118,7 +119,7 @@ fun SpriteCard(
                     modifier = Modifier
                         .size(120.dp)
                         .clip(RoundedCornerShape(8.dp)),
-                    error = painterResource(id = android.R.drawable.stat_notify_error)
+                    error = painterResource(id = R.drawable.stat_notify_error)
                 )
             } else {
                 Box(
