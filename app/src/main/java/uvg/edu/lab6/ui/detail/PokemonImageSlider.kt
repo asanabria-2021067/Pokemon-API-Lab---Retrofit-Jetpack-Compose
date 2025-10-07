@@ -1,4 +1,4 @@
-package uvg.edu.lab6.detail
+package uvg.edu.lab6.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

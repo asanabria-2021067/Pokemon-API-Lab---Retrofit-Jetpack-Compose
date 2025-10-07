@@ -1,4 +1,4 @@
-package uvg.edu.lab6.ui.main
+package uvg.edu.lab6.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import uvg.edu.lab6.data.model.PokemonSummary
-import uvg.edu.lab6.data.repository.PokemonRepository
+import uvg.edu.lab6.data.repository.MainRepository
 
 class MainViewModel(
-    private val repository: PokemonRepository = PokemonRepository()
+    private val repository: MainRepository = MainRepository()
 ) : ViewModel() {
 
     private val _pokemonList = MutableStateFlow<List<PokemonSummary>>(emptyList())

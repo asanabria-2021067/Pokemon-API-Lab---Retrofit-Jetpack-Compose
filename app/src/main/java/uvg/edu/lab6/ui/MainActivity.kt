@@ -1,4 +1,4 @@
-package uvg.edu.lab6
+package uvg.edu.lab6.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,9 +13,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import uvg.edu.lab6.ui.theme.PokedexTheme
-import uvg.edu.lab6.ui.main.MainScreen
 import uvg.edu.lab6.ui.detail.DetailScreen
+import uvg.edu.lab6.ui.main.MainScreen
+import uvg.edu.lab6.ui.theme.PokedexTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
